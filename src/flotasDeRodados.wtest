@@ -1,0 +1,7 @@
+import FlotaDeRodados.*
+test "cachito"{
+	var cachito = new corsa(color= rojo)
+	var flotaDeDeportes = new FlotaDeRodados()
+	
+	
+}
