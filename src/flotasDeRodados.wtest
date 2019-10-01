@@ -1,7 +1,41 @@
 import FlotaDeRodados.*
-test "cachito"{
-	var cachito = new corsa(color= rojo)
-	var flotaDeDeportes = new FlotaDeRodados()
+
+test "test dos dependencias"{
+	var cachito = new ChevroletCorsa(color= rojo)
+	
+	var flotaDeDeportes = new FlotaDeRodados(empleados=45)
+	var flotaDeCultura = new FlotaDeRodados(empleados=31)
+	
+	flotaDeDeportes.agregarAFlota(cachito)
+	flotaDeDeportes.agregarAFlota(new ChevroletCorsa(color=azul))
+	flotaDeDeportes.agregarAFlota(new ChevroletCorsa(color=verde))
+	flotaDeDeportes.agregarAFlota(new RenaultKwid(tanqueAdicional = true))
+	var autoEspecial = new AutoEspecial(color=beige, velocidadMaxima=160,capacidad=5,peso=1200)
+	flotaDeDeportes.agregarAFlota(autoEspecial)				
+
+	flotaDeCultura.agregarAFlota(cachito)
+	flotaDeCultura.agregarAFlota(new RenaultKwid(tanqueAdicional = true))
+	flotaDeCultura.agregarAFlota(new RenaultKwid(tanqueAdicional = true))
+	flotaDeCultura.agregarAFlota(new RenaultKwid(tanqueAdicional = false))
+	
+	trafic.popular()
+	trafic.motorBataton()
+	
+	flotaDeCultura.agregarAFlota(trafic)
+	
+	assert.equals(flotaDeDeportes.pesoTotalFlota(),6450)
+	assert.that(flotaDeDeportes.estaBienEquipada())
+	assert.equals(flotaDeDeportes.capacidadTotalEnColor(azul),8)
+	assert.that(flotaDeDeportes.colorDelRodadoMaxRapido()==beige)
+	assert.that(flotaDeDeportes.esGrande())
+	assert.equals(flotaDeDeportes.capacidadFaltante(),24)
 	
 	
+	assert.equals(flotaDeCultura.pesoTotalFlota(),10700)
+	assert.that(not flotaDeCultura.estaBienEquipada())
+	assert.equals(flotaDeCultura.capacidadTotalEnColor(azul),11)
+	assert.that(flotaDeCultura.colorDelRodadoMaxRapido()==rojo)
+	assert.that(not flotaDeCultura.esGrande())
+	assert.equals(flotaDeCultura.capacidadFaltante(),4)
 }
+

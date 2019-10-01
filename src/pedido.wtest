@@ -1,0 +1,15 @@
+import FlotaDeRodados.*
+
+test "pedido"{
+	
+	var cachito = new ChevroletCorsa(color= rojo)
+	var pedido = new Pedido (coloresIncompatibles = [azul,negro],distanciaARecorrer= 960, cantidadDePasajeros =4,tiempoMaximo=8)
+	
+	assert.that(pedido.puedeSatifacerPedido(cachito))
+	
+	
+	pedido.coloresIncompatibles([rojo])
+	pedido.cantidadDePasajeros(6)
+	
+	assert.notThat(pedido.puedeSatifacerPedido(cachito))
+}

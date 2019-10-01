@@ -1,10 +1,23 @@
-object blanco {}
-object azul {}
+import wollok.game.*
+
+class region{
+	var lista
+	var x = []
+	var y = []
+	method tamanio(x1,x2,y1,y2){
+		x =[ x1 ..x2]
+		y = [y1 .. y2]
+		
+		return lista 
+	}
+}
 
 class ChevroletCorsa {
-	
-	var property color
-	
+	var property position = new Position (x=0,y=5)
+	var property historialDeMovimientos = []
+	var property color						////////////
+	var ultimoMovimiento = null
+
 	method capacidad(){
 		return 4
 	}
@@ -14,10 +27,36 @@ class ChevroletCorsa {
 	method peso(){
 		return 1300
 	}
+	method moverHacia(dir){
+		ultimoMovimiento = dir
+		if(dir==norte){
+			self.position(position.up(1))
+		}
+		else if(dir==sur){
+			self.position(position.down(1))
+		}
+		else if(dir==oeste){
+			self.position(position.left(1))
+		}
+		else if(dir==este){
+			self.position(position.right(1))
+		}
+		historialDeMovimientos.add(position)
+	}
+	method repetirUltimoMovimiento(){
+		self.moverHacia(ultimoMovimiento)
+	}
+	method pasoPor(posicion){
+		historialDeMovimientos.any({pos=>pos == posicion})
+	}
+	method estaEn(region){
+		
+	}
+	
 }
 
 class RenaultKwid{
-	var property tanqueAdicional
+	var property tanqueAdicional			////////
 	method capacidad(){
 		if(tanqueAdicional){
 			return 4
@@ -75,10 +114,19 @@ object trafic{
 	}
 }
 
-class FlotaDeRodado{
-	var property empleados
+class AutoEspecial{
+	var property peso
+	var property velocidadMaxima
+	var property capacidad
+	var property color
+}
+
+class FlotaDeRodados{
+	var property empleados										/////
 	var property flota = []
-	var resultado
+	var resultado = null
+	var pedidos = []
+	
 	method agregarAFlota(rodado){
 		flota.add(rodado)
 	}
@@ -107,4 +155,64 @@ class FlotaDeRodado{
 	method esGrande(){
 		return empleados >= 40 and flota.size() >= 5
 	}
+	/////////ETAPA3///////////
+	
+
+	method agregarPedido(ped){
+		pedidos.add(ped)
+	}
+	method quitarPedido(ped){
+		pedidos.remove(ped)
+	}
+	method totalPasajerosEnPedidos(){
+		return pedidos.sum({pedido=>pedido.cantidadDePasajeros()})
+	}
+	method satifacePedido(auto){
+		return pedidos.any({pd => pd.puedeSatifacerPedido(auto)})
+	}
+	method cualNoSatifacePedido(){
+		return flota.filter({auto=> pedidos.any({pd => not pd.puedeSatifacerPedido(auto)})	})
+	}
 }
+
+
+class Pedido{
+	var property distanciaARecorrer //KMS
+	var property tiempoMaximo //HrS
+	var property cantidadDePasajeros
+	var property coloresIncompatibles = []
+	method velocidadRequerida(){
+		return distanciaARecorrer / tiempoMaximo
+	}
+	method puedeSatifacerPedido(auto){
+		
+		return auto.velocidadMaxima()+10 >= self.velocidadRequerida() and auto.capacidad()>=cantidadDePasajeros and not coloresIncompatibles.any({pd => pd == auto.color()})
+	}
+	method acelerar(){
+		self.tiempoMaximo()-1
+	}
+	method relajar(){
+		self.tiempoMaximo() + 1
+	}
+}
+
+
+
+
+
+
+
+//AUX
+object rojo{}
+object verde{}
+object blanco {}
+object azul {}
+object beige{}
+
+object norte{}
+object oeste{}
+object este{}
+object sur{}
+object negro{}
+
+
