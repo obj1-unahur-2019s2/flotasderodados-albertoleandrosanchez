@@ -1,22 +1,22 @@
 import wollok.game.*
 
-class region{
-	var lista
-	var x = []
-	var y = []
+class Region{
+	var property x = []
+	var property y = []
 	method tamanio(x1,x2,y1,y2){
 		x =[ x1 ..x2]
 		y = [y1 .. y2]
 		
-		return lista 
+	
 	}
 }
 
 class ChevroletCorsa {
-	var property position = new Position (x=0,y=5)
+	var property position = new Position (x=0,y=0)
 	var property historialDeMovimientos = []
 	var property color						////////////
 	var ultimoMovimiento = null
+	var ListaPosiciones = []
 
 	method capacidad(){
 		return 4
@@ -27,7 +27,14 @@ class ChevroletCorsa {
 	method peso(){
 		return 1300
 	}
-	method moverHacia(dir){
+	
+	method moverHacia(direccion){
+        position = direccion.nuevaDireccion(position)
+        ultimoMovimiento= direccion
+        ListaPosiciones.add(direccion)
+    }
+    
+	/*method moverHacia(dir){
 		ultimoMovimiento = dir
 		if(dir==norte){
 			self.position(position.up(1))
@@ -43,6 +50,8 @@ class ChevroletCorsa {
 		}
 		historialDeMovimientos.add(position)
 	}
+	* 
+	*/
 	method repetirUltimoMovimiento(){
 		self.moverHacia(ultimoMovimiento)
 	}
@@ -50,8 +59,8 @@ class ChevroletCorsa {
 		historialDeMovimientos.any({pos=>pos == posicion})
 	}
 	method estaEn(region){
-		
-	}
+		region.x().contains(self.x()) and region.y().contains(self.y())
+	
 	
 }
 
@@ -189,10 +198,10 @@ class Pedido{
 		return auto.velocidadMaxima()+10 >= self.velocidadRequerida() and auto.capacidad()>=cantidadDePasajeros and not coloresIncompatibles.any({pd => pd == auto.color()})
 	}
 	method acelerar(){
-		self.tiempoMaximo()-1
+		tiempoMaximo =-1
 	}
 	method relajar(){
-		self.tiempoMaximo() + 1
+		tiempoMaximo =+ 1
 	}
 }
 
@@ -209,10 +218,27 @@ object blanco {}
 object azul {}
 object beige{}
 
-object norte{}
-object oeste{}
-object este{}
-object sur{}
-object negro{}
+object norte{
+	method mueveDireccion(direccion){
+		return direccion.up(1)
+	}
+}
+object oeste{
+	method mueveDireccion(direccion){
+		return direccion.left(1)
+	}
+}
+object este{
+	method mueveDireccion(direccion){
+		return direccion.right(1)
+	}
+}
+object sur{
+	method mueveDireccion(direccion){
+		return direccion.down(1)
+	}
+}
+object negro{
+}
 
 
